@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>The results</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>The current results</h1>
+    <p>Return to the main page <a href="/">here</a>.</p>
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>No. votes</th>
+            <th>Supporters</th>
+        </tr>
+        <tr th:each="option : ${options}">
+            <td th:text="${option.name}">Could not render name!</td>
+            <td th:text="${option.numVotes}"></td>
+            <td th:text="${option.supporters}">Could not render supporters!</td>
+        </tr>
+    </table>
+</body>
+</html>

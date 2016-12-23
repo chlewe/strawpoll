@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Welcome to this strawpoll!</h1>
+    <p>You can add your vote to / remove it from several options below.<br />
+        The results are located <a href="/results">here</a>.</p>
+    <form action="/vote" method="get">
+        <h2>Vote</h2>
+        <table>
+            <tr>
+                <td><label for="name">Name:</label></td>
+                <td><input type="text" name="name" id="name" placeholder="Your name" /></td>
+            </tr>
+            <tr>
+                <td>Operation:</td>
+                <td>
+                    <select name="op">
+                    <option value="vote">Vote</option>
+                    <option value="unvote">Un-vote</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Your choice:</td>
+                <td>
+                    <select name="choice">
+                    <option th:each="option : ${options}"
+                            th:text="${option.name}"
+                            th:value="${option.id}">Could not render name!
+                    </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+    <form action="/add" method="get">
+        <h2>Add an option</h2>
+        <table>
+            <tr>
+                <td><label for="optionName">Name:</label></td>
+                <td><input type="text" name="name" id="optionName" placeholder="Name of the new option" /></td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>
