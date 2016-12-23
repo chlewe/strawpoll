@@ -1,0 +1,24 @@
+.settings/
+.project
+.classpath
+.springBeans
+
+# Already compiled code
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Intellij files
+target/
+out/
+modules.xml
+.idea/
+*.iml
+*.ipr
+
