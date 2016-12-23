@@ -5,6 +5,7 @@
 
 # Already compiled code
 *.class
+*.pdf
 
 # Package files
 *.jar
