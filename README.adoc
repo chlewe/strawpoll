@@ -1,1 +1,23 @@
-# strawpoll
+# A strawpoll web application
+
+This Spring-based application creates a strawpoll website at
+`http://localhost:8080` where users can add votes to or remove then from
+options, but also create entirely new options for the poll.
+
+## How to build
+[source, shell]
+----
+$ git clone git@github.com:chlewe/strawpoll.git
+$ cd strawpoll
+$ mvn clean package
+----
+
+## How to use
+[source, shell]
+----
+$ java -jar target/strawpoll-{VERSION}.jar
+----
+
+If you are running this on a webserver, you might want to set up a reverse proxy
+to port 8080.
+
