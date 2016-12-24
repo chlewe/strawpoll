@@ -78,7 +78,7 @@ public class VotingController {
         }
 
         this.getOptions().add(new Option(name));
-        model.addAttribute("heading", "Successfully added the option \'" + name + "\'!");
+        model.addAttribute("heading", "Successfully added \'" + name + "\' to the poll!");
         return "success";
     }
 }
