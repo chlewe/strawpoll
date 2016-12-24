@@ -1,5 +1,7 @@
 package me.lewelup;
 
+import me.lewelup.controller.VotingController;
+import me.lewelup.model.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

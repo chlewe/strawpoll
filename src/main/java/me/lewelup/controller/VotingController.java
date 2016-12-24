@@ -1,6 +1,7 @@
-package me.lewelup;
+package me.lewelup.controller;
 
 import lombok.Getter;
+import me.lewelup.model.Option;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

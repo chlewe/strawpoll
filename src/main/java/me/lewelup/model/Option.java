@@ -1,4 +1,4 @@
-package me.lewelup;
+package me.lewelup.model;
 
 import lombok.Getter;
 import lombok.NonNull;
