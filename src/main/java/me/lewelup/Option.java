@@ -32,23 +32,29 @@ public class Option {
         this.id = highestId++;
     }
 
-    public void addSupporter(@NonNull String name) {
+    public boolean addSupporter(@NonNull String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty!");
         }
 
         if (this.supporters.add(name)) {
             this.numVotes++;
+            return true;
         }
+
+        return false;
     }
 
-    public void removeSupporter(@NonNull String name) {
+    public boolean removeSupporter(@NonNull String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty!");
         }
 
         if (this.supporters.remove(name)) {
             this.numVotes--;
+            return true;
         }
+
+        return false;
     }
 }

@@ -45,12 +45,20 @@ public class VotingController {
             if (option.getId() == choice) {
                 switch (op) {
                     case "vote":
-                        option.addSupporter(name);
-                        model.addAttribute("heading", "Thank you for your vote!");
+                        if (option.addSupporter(name)) {
+                            model.addAttribute("heading", "Thank you for your vote!");
+                        } else {
+                            model.addAttribute("heading", "You already voted for this option!");
+                        }
+
                         break;
                     case "unvote":
-                        option.removeSupporter(name);
-                        model.addAttribute("heading", "Successfully removed your vote!");
+                        if (option.removeSupporter(name)) {
+                            model.addAttribute("heading", "Successfully removed your vote!");
+                        } else {
+                            model.addAttribute("heading", "Failed to remove non-existent vote!");
+                        }
+
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid operation \'" + op + "\'!");
