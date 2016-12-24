@@ -3,8 +3,7 @@ package me.lewelup;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * A representation of an option in the poll.
@@ -18,7 +17,7 @@ public class Option {
     @Getter
     private String name;
     @Getter
-    private Set<String> supporters;
+    private LinkedHashSet<String> supporters;
     @Getter
     private int numVotes;
 
@@ -28,7 +27,7 @@ public class Option {
         }
 
         this.name = name;
-        this.supporters = new HashSet<>();
+        this.supporters = new LinkedHashSet<>();
         this.id = highestId++;
     }
 
