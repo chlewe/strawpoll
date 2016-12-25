@@ -35,7 +35,7 @@ public class VotingController {
         return "results";
     }
 
-    @RequestMapping(value = "/vote")
+    @RequestMapping("/vote")
     public String vote(Model model, @RequestParam String name, @RequestParam String op,
             @RequestParam int choice) {
         if (name.isEmpty() || op.isEmpty()) {
@@ -72,7 +72,7 @@ public class VotingController {
         throw new IllegalArgumentException("Invalid choice!");
     }
 
-    @RequestMapping(value = "/add")
+    @RequestMapping("/add")
     public String add(Model model, @RequestParam String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty!");
