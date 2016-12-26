@@ -23,3 +23,6 @@ modules.xml
 *.iml
 *.ipr
 
+# Application properties
+application.properties
+
