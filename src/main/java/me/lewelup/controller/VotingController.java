@@ -100,4 +100,32 @@ public class VotingController {
 
         return "success";
     }
+
+    @RequestMapping("/admin")
+    public String admin(Model model) {
+        model.addAttribute("options", this.options);
+        return "admin";
+    }
+
+    @RequestMapping("/admin/delete")
+    public String adminDelete(Model model, @RequestParam long id) {
+        for (Option option : this.options) {
+            if (option.getId() == id) {
+                if (this.options.remove(option)) {
+                    this.repository.delete(id);
+                    model.addAttribute("heading", "Successfully deleted \'" + option.getName() +
+                            "\'!");
+                } else {
+                    model.addAttribute("heading", "Failed to delete non-existent option!");
+                }
+
+                model.addAttribute("main", "../../");
+                model.addAttribute("results", "../../results/");
+
+                return "success";
+            }
+        }
+
+        throw new IllegalArgumentException("Chosen option doesn't exist! (Invalid ID)");
+    }
 }
