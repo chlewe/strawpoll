@@ -2,12 +2,15 @@ package me.lewelup.controller;
 
 import lombok.Getter;
 import me.lewelup.model.Option;
+import me.lewelup.model.OptionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Logic for the index, results, and success pages.
@@ -17,10 +20,17 @@ import java.util.LinkedHashSet;
 @Controller
 public class VotingController {
     @Getter
-    private LinkedHashSet<Option> options;
+    private Set<Option> options;
+    private OptionRepository repository;
 
-    public VotingController() {
+    @Autowired
+    public VotingController(OptionRepository repository) {
+        this.repository = repository;
         this.options = new LinkedHashSet<>();
+
+        for (Option option : this.repository.findAll()) {
+            this.options.add(option);
+        }
     }
 
     @RequestMapping("/")
@@ -37,7 +47,7 @@ public class VotingController {
 
     @RequestMapping("/vote")
     public String vote(Model model, @RequestParam String name, @RequestParam String op,
-            @RequestParam int choice) {
+            @RequestParam long choice) {
         if (name.isEmpty() || op.isEmpty()) {
             throw new IllegalArgumentException("Name or operation cannot be empty!");
         }
@@ -65,6 +75,7 @@ public class VotingController {
                         throw new IllegalArgumentException("Invalid operation \'" + op + "\'!");
                 }
 
+                this.repository.save(option);
                 return "success";
             }
         }
@@ -78,8 +89,15 @@ public class VotingController {
             throw new IllegalArgumentException("Name cannot be empty!");
         }
 
-        this.getOptions().add(new Option(name));
-        model.addAttribute("heading", "Successfully added \'" + name + "\' to the poll!");
+        Option newOption = new Option(name);
+
+        if (this.getOptions().add(newOption)) {
+            this.repository.save(newOption);
+            model.addAttribute("heading", "Successfully added \'" + name + "\' to the poll!");
+        } else {
+            model.addAttribute("heading", "This option already exists!");
+        }
+
         return "success";
     }
 }

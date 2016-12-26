@@ -1,8 +1,8 @@
 package me.lewelup.model;
 
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 
 /**
@@ -10,10 +10,17 @@ import java.util.LinkedHashSet;
  *
  * @author Christian Lewe
  */
+@Entity
+@Table(name = "options")
+@EqualsAndHashCode(exclude = {"id", "supporters", "numVotes"})
+@NoArgsConstructor
 public class Option {
+    @Id
+    @GeneratedValue(generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "SEQ", allocationSize = 1, initialValue = 1)
     @Getter
-    private int id;
-    private static int highestId = 0;
+    private long id;
+
     @Getter
     private String name;
     @Getter
@@ -28,7 +35,6 @@ public class Option {
 
         this.name = name;
         this.supporters = new LinkedHashSet<>();
-        this.id = highestId++;
     }
 
     public boolean addSupporter(@NonNull String name) {
