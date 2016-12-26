@@ -47,13 +47,13 @@ public class VotingController {
 
     @RequestMapping("/vote")
     public String vote(Model model, @RequestParam String name, @RequestParam String op,
-            @RequestParam long choice) {
+            @RequestParam long id) {
         if (name.isEmpty() || op.isEmpty()) {
             throw new IllegalArgumentException("Name or operation cannot be empty!");
         }
 
         for (Option option : this.options) {
-            if (option.getId() == choice) {
+            if (option.getId() == id) {
                 switch (op) {
                     case "vote":
                         if (option.addSupporter(name)) {
@@ -80,7 +80,7 @@ public class VotingController {
             }
         }
 
-        throw new IllegalArgumentException("Invalid choice!");
+        throw new IllegalArgumentException("Chosen option doesn't exist! (Invalid ID)");
     }
 
     @RequestMapping("/add")
