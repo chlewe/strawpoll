@@ -1,24 +1,30 @@
-package me.lewelup;
+package me.lewelup.model;
 
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
 
 /**
  * A representation of an option in the poll.
  *
  * @author Christian Lewe
  */
+@Entity
+@Table(name = "options")
+@EqualsAndHashCode(exclude = {"id", "supporters", "numVotes"})
+@NoArgsConstructor
 public class Option {
+    @Id
+    @GeneratedValue(generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "SEQ", allocationSize = 1, initialValue = 1)
     @Getter
-    private int id;
-    private static int highestId = 0;
+    private long id;
+
     @Getter
     private String name;
     @Getter
-    private Set<String> supporters;
+    private LinkedHashSet<String> supporters;
     @Getter
     private int numVotes;
 
@@ -28,27 +34,32 @@ public class Option {
         }
 
         this.name = name;
-        this.supporters = new HashSet<>();
-        this.id = highestId++;
+        this.supporters = new LinkedHashSet<>();
     }
 
-    public void addSupporter(@NonNull String name) {
+    public boolean addSupporter(@NonNull String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty!");
         }
 
         if (this.supporters.add(name)) {
             this.numVotes++;
+            return true;
         }
+
+        return false;
     }
 
-    public void removeSupporter(@NonNull String name) {
+    public boolean removeSupporter(@NonNull String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty!");
         }
 
         if (this.supporters.remove(name)) {
             this.numVotes--;
+            return true;
         }
+
+        return false;
     }
 }

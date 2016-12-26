@@ -7,13 +7,15 @@
 <body>
     <h1>Welcome to this strawpoll!</h1>
     <p>You can add your vote to / remove it from several options below.<br />
+        If you want to add an entirely new option to the poll, feel free to do so below.<br />
         The results are located <a href="results/">here</a>.</p>
     <form action="vote/" method="get">
         <h2>Vote</h2>
         <table>
             <tr>
                 <td><label for="name">Name:</label></td>
-                <td><input type="text" name="name" id="name" placeholder="Your name" /></td>
+                <td><input type="text" name="name" id="name" placeholder="Your name"
+                           required="required" /></td>
             </tr>
             <tr>
                 <td>Operation:</td>
@@ -27,7 +29,7 @@
             <tr>
                 <td>Your choice:</td>
                 <td>
-                    <select name="choice">
+                    <select name="id">
                     <option th:each="option : ${options}"
                             th:text="${option.name}"
                             th:value="${option.id}">Could not render name!
@@ -43,7 +45,8 @@
         <table>
             <tr>
                 <td><label for="optionName">Name:</label></td>
-                <td><input type="text" name="name" id="optionName" placeholder="Name of the new option" /></td>
+                <td><input type="text" name="name" id="optionName"
+                           placeholder="Name of the new option" required="required" /></td>
             </tr>
         </table>
         <input type="submit" value="Submit" />

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Admin page</h1>
+    <p>You can permanently delete options below, including all their supporters.<br />
+        Return to the main page <a href="../">here</a>.</p>
+    <form action="delete/" method="get">
+        <h2>Delete an option</h2>
+        <table>
+            <tr>
+                <td>Your choice:</td>
+                <td>
+                    <select name="id">
+                    <option th:each="option : ${options}"
+                            th:text="${option.name}"
+                            th:value="${option.id}">Could not render name!
+                    </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>I am aware that this is irreversible:</td>
+                <td>
+                    <input type="checkbox" name="iAmSure" value="yes" required="required" />
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>
