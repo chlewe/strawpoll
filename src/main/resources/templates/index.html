@@ -27,15 +27,15 @@
                     </select>
                 </td>
             </tr>
+        </table>
+        <table>
             <tr>
-                <td>Your choice:</td>
+                <th>Choose one or more options:</th>
+            </tr>
+            <tr th:each="option : ${options}">
                 <td>
-                    <select name="id">
-                    <option th:each="option : ${options}"
-                            th:text="${option.name}"
-                            th:value="${option.id}">Could not render name!
-                    </option>
-                    </select>
+                    <input type="checkbox" th:name="${option.id}" />
+                    <label th:text="${option.name}">Could not render name!</label>
                 </td>
             </tr>
         </table>

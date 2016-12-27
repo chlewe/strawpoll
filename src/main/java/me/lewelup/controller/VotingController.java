@@ -1,6 +1,7 @@
 package me.lewelup.controller;
 
 import lombok.Getter;
+import lombok.NonNull;
 import me.lewelup.model.Option;
 import me.lewelup.model.OptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,42 +47,98 @@ public class VotingController {
         return "results";
     }
 
-    @RequestMapping("/vote")
-    public String vote(Model model, @RequestParam String name, @RequestParam String op,
-            @RequestParam long id) {
-        if (name.isEmpty() || op.isEmpty()) {
-            throw new IllegalArgumentException("Name or operation cannot be empty!");
-        }
-
-        for (Option option : this.options) {
+    private Option findOptionById(@NonNull Iterable<Option> iterable, @NonNull long id) {
+        for (Option option : iterable) {
             if (option.getId() == id) {
-                switch (op) {
-                    case "vote":
-                        if (option.addSupporter(name)) {
-                            model.addAttribute("heading", "Thank you for your vote!");
-                        } else {
-                            model.addAttribute("heading", "You already voted for this option!");
-                        }
-
-                        break;
-                    case "unvote":
-                        if (option.removeSupporter(name)) {
-                            model.addAttribute("heading", "Successfully removed your vote!");
-                        } else {
-                            model.addAttribute("heading", "Failed to remove non-existent vote!");
-                        }
-
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid operation \'" + op + "\'!");
-                }
-
-                this.repository.save(option);
-                return "success";
+                return option;
             }
         }
 
-        throw new IllegalArgumentException("Chosen option doesn't exist! (Invalid ID)");
+        return null;
+    }
+
+    @RequestMapping("/vote")
+    public String vote(Model model, @RequestParam Map<String, String> params) {
+        if (!params.containsKey("name") || params.get("name").isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty!");
+        }
+
+        if (!params.containsKey("op") || params.get("op").isEmpty()) {
+            throw new IllegalArgumentException("Operation cannot be empty!");
+        }
+
+        boolean oneSuccessful = false;
+        boolean oneFailed = false;
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (entry.getKey().equals("name") || entry.getKey().equals("name") ||
+                    !entry.getValue().equals("on")) {
+                continue;
+            }
+
+            Option option = findOptionById(this.options, Long.valueOf(entry.getKey()));
+
+            if (option == null) {
+                throw new IllegalArgumentException("Chosen option doesn't exist! (ID = \'" +
+                        entry.getKey() + "\')");
+            }
+
+            switch (params.get("op")) {
+                case "vote":
+                    if (option.addSupporter(params.get("name"))) {
+                        oneSuccessful = true;
+                    } else {
+                        oneFailed = true;
+                    }
+
+                    break;
+                case "unvote":
+                    if (option.removeSupporter(params.get("name"))) {
+                        oneSuccessful = true;
+                    } else {
+                        oneFailed = true;
+                    }
+
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid operation \'" + params.get("op")
+                            + "\'!");
+            }
+
+            this.repository.save(option);
+        }
+
+        switch (params.get("op")) {
+            case "vote":
+                if (!oneFailed) {
+                    model.addAttribute("heading", "Thank you for your votes!");
+                } else if (oneSuccessful) {
+                    model.addAttribute("heading" , "You have already voted for some of these " +
+                            "options! These votes were ignored.");
+                } else {
+                    model.addAttribute("heading", "You have already voted for all of these " +
+                            "options! No votes have been added.");
+                }
+
+                break;
+            case "unvote":
+                if (!oneFailed) {
+                    model.addAttribute("heading", "Successfully removed all of these votes!");
+                } else if (oneSuccessful) {
+                    model.addAttribute("heading", "Some of these options don't exist! These " +
+                            "votes weren't removed.");
+                } else {
+                    model.addAttribute("heading", "None of these options exist! No votes have " +
+                            "been removed.");
+                }
+
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid operation \'" + params.get("op")
+                        + "\'!");
+        }
+
+        return "success";
     }
 
     @RequestMapping("/add")
