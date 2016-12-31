@@ -9,15 +9,6 @@ admin page where options can be deleted.
 [source, shell]
 ----
 $ git clone git@github.com:chlewe/strawpoll.git
-----
-
-[start=2]
-. Create a database
-. Give a user all privileges to this database (create the user if necessary)
-. Update the `application.properties` file located at `src/main/resources/`
-
-[source, shell]
-----
 $ cd strawpoll
 $ mvn clean package
 ----
