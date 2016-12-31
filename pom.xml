@@ -53,13 +53,15 @@
             <version>1.4.3.RELEASE</version>
         </dependency>
 
-        <!-- For MySQL connection, duh -->
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <!-- An embedded SQL database -->
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+            <scope>runtime</scope>
         </dependency>
+
 
         <!-- For unit tests -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
